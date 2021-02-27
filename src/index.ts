@@ -34,7 +34,7 @@ app.post("/webhook/:id", async (request, response) => {
         monitorFriendlyName: request.query.monitorFriendlyName || "Unknown",
         alertType: request.query.alertType,
         alertTypeFriendlyName: request.query.alertTypeFriendlyName || "Unknown",
-        alertDetails: request.query.alertDetails,
+        alertDetails: request.query.alertDetails || "Unknown",
         alertDuration: request.query.alertDuration,
         monitorAlertContacts: request.query.monitorAlertContacts,
         sslExpiryDate: request.query.sslExpiryDate,

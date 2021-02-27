@@ -53,7 +53,7 @@ export class WebhookProcessor {
 
             const data = enrichData(payload);
 
-            let title = `<h4><b>${data.monitorFriendlyName} is <u>${data.statusText}</u>!</b></h4>`;
+            let title = `<h4>${data.monitorFriendlyName} is <u>${data.statusText}</u>!</h4>`;
             let text = ``;
             if(data.isUp && data.alertDuration) {
                 text += `${data.monitorFriendlyName} was down for ${data.alertDuration}.\n`;
