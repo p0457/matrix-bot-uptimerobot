@@ -41,6 +41,7 @@ async function processWebhook(request: any, response: any): Promise<any> {
         return response.status(406).send();
     }
     const payload = {
+        port: query.port,
         monitorID: query.monitorID || body.monitorID,
         monitorURL: query.monitorURL || body.monitorURL,
         monitorFriendlyName: query.monitorFriendlyName || body.monitorFriendlyName || "Unknown",

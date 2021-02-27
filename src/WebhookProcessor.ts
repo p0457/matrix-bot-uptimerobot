@@ -24,6 +24,7 @@ export class WebhookProcessor {
                     statusColor,
                     statusText,
                     isUp: obj.alertType === "2",
+                    port: obj.port,
                     monitorID: obj.monitorID,
                     monitorURL: obj.monitorURL,
                     monitorFriendlyName: obj.monitorFriendlyName,
@@ -67,6 +68,7 @@ export class WebhookProcessor {
             let url = "https://uptimerobot.com";
             if (data.monitorURL) url = data.monitorURL;
             if (!url.startsWith("http://") && !url.startsWith("https://")) url = `https://${url}`;
+            if (data.port && !isNaN(data.port)) url = `${url}:${data.port}`;
             title = `<a href="${url}">${title}</a>`;
 
             resultHtml += `${title}${text}`;
