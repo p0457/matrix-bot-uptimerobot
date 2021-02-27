@@ -74,14 +74,16 @@ export class WebhookProcessor {
             resultHtml += `${title}${text}`;
 
             // Send to rooms
-            roomIds.forEach((roomId) => {
-                return this.client.sendMessage(roomId, {
+            roomIds.forEach(async (roomId) => {
+                await this.client.sendMessage(roomId, {
                     msgtype: "m.notice",
                     body: striptags(resultHtml), // Fallback
                     format: "org.matrix.custom.html",
                     formatted_body: resultHtml.replace(`\n`, "<br/>")
                 });
             });
+
+            return Promise.resolve();
         }
         catch (e) {
             LogService.error("processWebhook", `Error processing webhook: ${JSON.stringify(e)}`);

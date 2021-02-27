@@ -53,7 +53,7 @@ async function processWebhook(request: any, response: any): Promise<any> {
         sslExpiryDate: query.sslExpiryDate || body.sslExpiryDate,
         sslExpiryDaysLeft: query.sslExpiryDaysLeft || body.sslExpiryDaysLeft
     };
-    webhookProcessor.processWebhook(id, roomIds, payload).then(() => { return response.status(200).send(); }).catch(() => { return response.status(500).send(); });
+    return webhookProcessor.processWebhook(id, roomIds, payload);
 }
 
 app.put("/webhook/:id", async (request, response) => {
@@ -62,11 +62,11 @@ app.put("/webhook/:id", async (request, response) => {
 });
 app.get("/webhook/:id", async (request, response) => {
     LogService.info("app.get", `Received request: ${JSON.stringify({ id: request.params.id, query: request.query, body: request.body })}`);
-    return processWebhook(request, response);
+    return processWebhook(request, response).then(() => { return response.status(200).send(); }).catch(() => { return response.status(500).send(); });
 });
 app.post("/webhook/:id", async (request, response) => {
     LogService.info("app.post", `Received request: ${JSON.stringify({ id: request.params.id, query: request.query, body: request.body })}`);
-    return processWebhook(request, response);
+    return processWebhook(request, response).then(() => { return response.status(200).send(); }).catch(() => { return response.status(500).send(); });
 });
 app.listen(port, () => {
     LogService.info("app.listen", `UptimeRobotBot Server running on port ${port}`);
