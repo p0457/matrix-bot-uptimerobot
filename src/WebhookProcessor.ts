@@ -6,7 +6,7 @@ export class WebhookProcessor {
     constructor(private client: MatrixClient) {
     }
 
-    public processWebhook(id: string, roomId: string, payload: any): Promise<any> {
+    public processWebhook(id: string, roomIds: string[], payload: any): Promise<any> {
         try {
             let resultHtml = "";
 
@@ -71,12 +71,14 @@ export class WebhookProcessor {
 
             resultHtml += `${title}${text}`;
 
-            // Send to room
-            return this.client.sendMessage(roomId, {
-                msgtype: "m.notice",
-                body: striptags(resultHtml), // Fallback
-                format: "org.matrix.custom.html",
-                formatted_body: resultHtml.replace(`\n`, "<br/>")
+            // Send to rooms
+            roomIds.forEach((roomId) => {
+                return this.client.sendMessage(roomId, {
+                    msgtype: "m.notice",
+                    body: striptags(resultHtml), // Fallback
+                    format: "org.matrix.custom.html",
+                    formatted_body: resultHtml.replace(`\n`, "<br/>")
+                });
             });
         }
         catch (e) {

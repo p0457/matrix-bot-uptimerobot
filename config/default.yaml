@@ -5,7 +5,7 @@ port: 33001
 
 webhooks:
   - guid: ""
-    room_id: ""
+    room_ids: [""]
 
 # Settings for controlling how logging works
 # The Docker image will only consider the consoleLevel, and not write to any files.

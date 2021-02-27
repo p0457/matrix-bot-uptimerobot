@@ -29,9 +29,9 @@ async function processWebhook(request: any, response: any): Promise<any> {
         LogService.error("app.post", `Config record not found for id ${id}`);
         return response.status(204).send();
     }
-    const roomId = configRecord.room_id;
-    if (!roomId) {
-        LogService.error("app.post", `roomId not found for id ${id}`);
+    const roomIds = configRecord.room_ids;
+    if (!roomIds || roomIds.length < 1) {
+        LogService.error("app.post", `roomIds not found for id ${id}`);
         return response.status(204).send();
     }
     const query = request.query || {};
@@ -52,7 +52,7 @@ async function processWebhook(request: any, response: any): Promise<any> {
         sslExpiryDate: query.sslExpiryDate || body.sslExpiryDate,
         sslExpiryDaysLeft: query.sslExpiryDaysLeft || body.sslExpiryDaysLeft
     };
-    return webhookProcessor.processWebhook(id, roomId, payload).then(() => { return response.status(200).send(); }).catch(() => { return response.status(500).send(); });
+    return webhookProcessor.processWebhook(id, roomIds, payload).then(() => { return response.status(200).send(); }).catch(() => { return response.status(500).send(); });
 }
 
 app.put("/webhook/:id", async (request, response) => {
