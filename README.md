@@ -2,6 +2,8 @@
 
 A matrix bot that listens to custom webhooks for UptimeRobot.
 
+This application is in no way affiliated with Uptime Robot.
+
 # Usage
 
 1. Configure bot offline in settings
