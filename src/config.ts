@@ -34,4 +34,13 @@ if (process.env["BOT_DOCKER_LOGS"]) {
     };
 }
 
+if (process.env["BOT_PORT"]) {
+    const realPort = Number(process.env["BOT_PORT"]);
+    if (realPort !== Number(conf.port)) {
+        console.warn("Configuration and environment variables do not agree on the webserver port. Using " + realPort);
+    }
+
+    conf.port = realPort;
+}
+
 export default conf;

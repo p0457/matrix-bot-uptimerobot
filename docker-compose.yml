@@ -6,3 +6,5 @@ services:
   matrix-bot-uptimerobot:
     image: matrix-bot-uptimerobot:latest
     container_name: matrix-bot-uptimerobot
+    ports:
+      - 33001:33001

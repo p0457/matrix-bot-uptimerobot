@@ -19,5 +19,8 @@ ENV NODE_CONFIG_DIR=/config
 
 # We want to make sure that the user can't configure these wrong
 ENV BOT_DOCKER_LOGS=true
+ENV BOT_PORT=33001
 
 CMD node /matrix-bot-uptimerobot/index.js
+
+EXPOSE 33001
