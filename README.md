@@ -5,10 +5,11 @@ A matrix bot that listens to custom webhooks for UptimeRobot.
 # Usage
 
 1. Configure bot offline in settings
-2. Invite bot to rooms designated in settings
-3. Add webhook endpoint to Uptime Robot (`[BOT_DEPLOYMENT_URL]/webhook/[ID]`)
-4. If using port, add `?port=[PORT]` to the end of the URL to overcome shortcoming in Uptime Robot webhook data properties available (-1 for verbose ignore)
-5. Get responses to webhooks when fired
+2. Make sure port in config is forwarded
+3. Invite bot to rooms designated in settings
+4. Add webhook endpoint to Uptime Robot (`[BOT_DEPLOYMENT_URL]/webhook/[ID]`)
+5. If using port, add `?port=[PORT]` to the end of the URL to overcome shortcoming in Uptime Robot webhook data properties available (-1 for verbose ignore)
+6. Get responses to webhooks when fired
 
 # Building your own
 
