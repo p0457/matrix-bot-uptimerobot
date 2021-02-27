@@ -35,11 +35,11 @@ async function processWebhook(request: any, response: any): Promise<any> {
         return response.status(204).send();
     }
     const query = request.query || {};
-    if (!query.monitorID) {
-        LogService.warn("processWebhook", `Payload was invalid, ignoring: ${JSON.stringify({ request })}`);
+    const body = request.body || {};
+    if (!query.monitorID && !body.monitorID) {
+        LogService.warn("processWebhook", `Payload was invalid, ignoring: ${JSON.stringify({ id, query: request.query, body: request.body })}`);
         return response.status(406).send();
     }
-    const body = request.body || {};
     const payload = {
         monitorID: query.monitorID || body.monitorID,
         monitorURL: query.monitorURL || body.monitorURL,
@@ -60,11 +60,11 @@ app.put("/webhook/:id", async (request, response) => {
     return response.status(405);
 });
 app.get("/webhook/:id", async (request, response) => {
-    LogService.info("app.get", `Received request: ${JSON.stringify(request)}`);
+    LogService.info("app.get", `Received request: ${JSON.stringify({ id: request.params.id, query: request.query, body: request.body })}`);
     return processWebhook(request, response);
 });
 app.post("/webhook/:id", async (request, response) => {
-    LogService.info("app.post", `Received request: ${JSON.stringify(request)}`);
+    LogService.info("app.post", `Received request: ${JSON.stringify({ id: request.params.id, query: request.query, body: request.body })}`);
     return processWebhook(request, response);
 });
 app.listen(port, () => {
