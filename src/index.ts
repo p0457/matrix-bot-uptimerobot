@@ -24,6 +24,10 @@ app.post("/webhook/:id", async (request, response) => {
     if (!configRecord) return response.status(204).send();
     const roomId = configRecord.room_id;
     if (!roomId) return response.status(204).send();
+    if (!request.query.monitorID) {
+        LogService.warn("app.post", `Payload was invalid, ignoring: ${JSON.stringify({ request })}`);
+        return response.status(406).send();
+    }
     const payload = {
         monitorID: request.query.monitorID,
         monitorURL: request.query.monitorURL,

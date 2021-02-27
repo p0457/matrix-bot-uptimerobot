@@ -7,8 +7,6 @@ export class WebhookProcessor {
     }
 
     public processWebhook(id: string, roomId: string, payload: any): Promise<any> {
-        LogService.info("processWebhook", `Responding to payload: ${JSON.stringify({ id, roomId, payload })}`);
-
         let resultHtml = "";
 
         const enrichData = (obj) => {
