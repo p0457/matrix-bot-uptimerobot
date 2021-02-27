@@ -53,24 +53,23 @@ export class WebhookProcessor {
 
             const data = enrichData(payload);
 
-            let title = `<b>${data.monitorFriendlyName} is <u>${data.statusText}</u>!</b>`;
+            let title = `<h4><b>${data.monitorFriendlyName} is <u>${data.statusText}</u>!</b></h4>`;
             let text = ``;
             if(data.isUp) {
-                text += `${data.monitorFriendlyName} was down for ${data.alertDuration}.`;
-            } else {
-                text += `${data.monitorFriendlyName} is down.\nReason: ${data.alertDetails}.`;
-            }
+                text += `${data.monitorFriendlyName} was down for ${data.alertDuration}.<br/>\n`;
+            } 
+            text += `Reason: ${data.alertDetails}.`;
             if (data.sslExpiryDate && data.sslExpiryDaysLeft) {
-                text += `\nSSL expires in ${data.sslExpiryDaysLeft} days!`;
+                text += `<br/>\nSSL expires in ${data.sslExpiryDaysLeft} days!`;
             }
             const color = data.statusColor;
-            const colorSquare = `<span color="${color}">█</span>`;
+            const colorSquare = `<span color="${color}">█</span>`; // This is not working with custom html
             let url = "https://uptimerobot.com";
             if (data.monitorURL) url = data.monitorURL;
-            if (!url.startsWith("http://")) url = `https://${url}`;
-            title = `${colorSquare} <a href="${url}">${title}</a>`;
+            if (!url.startsWith("http://") || !url.startsWith("https://")) url = `https://${url}`;
+            title = `<a href="${url}">${title}</a>`;
 
-            resultHtml += `${title}<br>\n${text}`
+            resultHtml += `${title}<br/>\n${text}`
 
             // Send to room
             return this.client.sendMessage(roomId, {
