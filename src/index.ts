@@ -17,7 +17,7 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 const port = config.port;
 
-app.get("/webhook/:id", async (request, response) => {
+app.post("/webhook/:id", async (request, response) => {
     const id = request.params.id;
     if (!id) return response.status(400).send();
     const configRecord = config.webhooks.find((w) => { return w.guid === id; });
