@@ -69,7 +69,7 @@ export class WebhookProcessor {
             if (!url.startsWith("http://") && !url.startsWith("https://")) url = `https://${url}`;
             title = `<a href="${url}">${title}</a>`;
 
-            resultHtml += `${title}\n${text}`
+            resultHtml += `${title}${text}`;
 
             // Send to room
             return this.client.sendMessage(roomId, {
