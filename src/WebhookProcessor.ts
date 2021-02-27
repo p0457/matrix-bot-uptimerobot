@@ -11,7 +11,7 @@ export class WebhookProcessor {
 
         let resultHtml = "";
 
-        const getData = (obj) => {
+        const enrichData = (obj) => {
             let statusColor = "#A63636";
             let statusText = "DOWN";
             let alertDuration = "0";
@@ -30,6 +30,8 @@ export class WebhookProcessor {
                 monitorFriendlyName: obj.monitorFriendlyName,
                 alertDetails: obj.alertDetails,
                 alertDuration: alertDuration,
+                sslExpiryDate: obj.sslExpiryDate,
+                sslExpiryDaysLeft: obj.sslExpiryDaysLeft
             };
         };
 
@@ -42,23 +44,15 @@ export class WebhookProcessor {
             seconds  -= minutes * 60;
 
             let result = "";
-            if (days > 0) {
-                result += ` ${days} days`;
-            }
-            if (hours > 0) {
-                result += ` ${hours} hours`;
-            }
-            if (minutes > 0) {
-                result += ` ${minutes} minutes`;
-            }
-            if (seconds > 0) {
-                result += ` ${seconds} seconds`;
-            }
+            if (days > 0) result += ` ${days} days`;
+            if (hours > 0) result += ` ${hours} hours`;
+            if (minutes > 0) result += ` ${minutes} minutes`;
+            if (seconds > 0) result += ` ${seconds} seconds`;
 
             return result.trim();
         };
 
-        const data = getData(payload);
+        const data = enrichData(payload);
 
         let title = `<b>${data.monitorFriendlyName} is <u>${data.statusText}</u>!</b>`;
         let text = ``;
@@ -66,6 +60,9 @@ export class WebhookProcessor {
             text += `${data.monitorFriendlyName} was down for ${data.alertDuration}.`;
         } else {
             text += `${data.monitorFriendlyName} is down.\nReason: ${data.alertDetails}.`;
+        }
+        if (data.sslExpiryDate && data.sslExpiryDaysLeft) {
+            text += `\nSSL expires in ${data.sslExpiryDaysLeft} days!`;
         }
         const color = data.statusColor;
         const colorSquare = `<span color="${color}">█</span>`;

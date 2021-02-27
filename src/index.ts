@@ -24,8 +24,18 @@ app.get("/webhook/:id", async (request, response) => {
     if (!configRecord) return response.status(204).send();
     const roomId = configRecord.room_id;
     if (!roomId) return response.status(204).send();
-    const payload = request.body;
-    if (!payload) return response.status(406).send();
+    const payload = {
+        monitorID: request.query.monitorID,
+        monitorURL: request.query.monitorURL,
+        monitorFriendlyName: request.query.monitorFriendlyName,
+        alertType: request.query.alertType,
+        alertTypeFriendlyName: request.query.alertTypeFriendlyName,
+        alertDetails: request.query.alertDetails,
+        alertDuration: request.query.alertDuration,
+        monitorAlertContacts: request.query.monitorAlertContacts,
+        sslExpiryDate: request.query.sslExpiryDate,
+        sslExpiryDaysLeft: request.query.sslExpiryDaysLeft
+    };
     return webhookProcessor.processWebhook(id, roomId, payload).then(() => { return response.status(200).send(); }).catch(() => { return response.status(500).send(); });
 });
 
