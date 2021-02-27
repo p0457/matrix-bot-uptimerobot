@@ -2,7 +2,7 @@ import * as config from "config";
 import { LogConfig } from "matrix-js-snippets";
 
 class webhooks {
-    guid: string;
+    id: string;
     room_ids: string[];
 }
 

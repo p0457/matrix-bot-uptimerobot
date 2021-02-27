@@ -4,7 +4,7 @@ accessToken: "YOUR_TOKEN_HERE"
 port: 33001
 
 webhooks:
-  - guid: ""
+  - id: ""
     room_ids: [""]
 
 # Settings for controlling how logging works

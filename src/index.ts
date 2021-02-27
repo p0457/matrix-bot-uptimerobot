@@ -24,7 +24,7 @@ async function processWebhook(request: any, response: any): Promise<any> {
         LogService.error("processWebhook", `id not provided`);
         return response.status(400).send();
     }
-    const configRecord = config.webhooks.find((w) => { return w.guid === id; });
+    const configRecord = config.webhooks.find((w) => { return w.id === id; });
     if (!configRecord) {
         LogService.error("processWebhook", `Config record not found for id ${id}`);
         return response.status(204).send();
