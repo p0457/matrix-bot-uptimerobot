@@ -17,13 +17,30 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 const port = config.port;
 
+app.get("/webhook/:id", async (request, response) => {
+    LogService.error("app.get", "Method not allowed");
+    return response.status(405);
+});
+app.put("/webhook/:id", async (request, response) => {
+    LogService.error("app.put", "Method not allowed");
+    return response.status(405);
+});
 app.post("/webhook/:id", async (request, response) => {
     const id = request.params.id;
-    if (!id) return response.status(400).send();
+    if (!id) {
+        LogService.error("app.post", `id not provided`);
+        return response.status(400).send();
+    }
     const configRecord = config.webhooks.find((w) => { return w.guid === id; });
-    if (!configRecord) return response.status(204).send();
+    if (!configRecord) {
+        LogService.error("app.post", `Config record not found for id ${id}`);
+        return response.status(204).send();
+    }
     const roomId = configRecord.room_id;
-    if (!roomId) return response.status(204).send();
+    if (!roomId) {
+        LogService.error("app.post", `roomId not found for id ${id}`);
+        return response.status(204).send();
+    }
     if (!request.query.monitorID) {
         LogService.warn("app.post", `Payload was invalid, ignoring: ${JSON.stringify({ request })}`);
         return response.status(406).send();
@@ -44,7 +61,7 @@ app.post("/webhook/:id", async (request, response) => {
 });
 
 app.listen(port, () => {
-    LogService.info("index", `UptimeRobotBot Server running on port ${port}`);
+    LogService.info("app.listen", `UptimeRobotBot Server running on port ${port}`);
 });
 
 async function finishInit() {
