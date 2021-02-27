@@ -1,0 +1,19 @@
+homeserverUrl: "YOUR_HOMESERVER_HERE"
+accessToken: "YOUR_TOKEN_HERE"
+
+port: 33001
+
+webhooks:
+  - guid: ""
+    room_id: ""
+
+# Settings for controlling how logging works
+# The Docker image will only consider the consoleLevel, and not write to any files.
+logging:
+  file: logs/matrix-bot-uptimerobot.log
+  console: true
+  consoleLevel: info
+  fileLevel: verbose
+  rotate:
+    size: 52428800 # bytes, default is 50mb
+    count: 5
