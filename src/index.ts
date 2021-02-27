@@ -31,9 +31,9 @@ app.post("/webhook/:id", async (request, response) => {
     const payload = {
         monitorID: request.query.monitorID,
         monitorURL: request.query.monitorURL,
-        monitorFriendlyName: request.query.monitorFriendlyName,
+        monitorFriendlyName: request.query.monitorFriendlyName || "Unknown",
         alertType: request.query.alertType,
-        alertTypeFriendlyName: request.query.alertTypeFriendlyName,
+        alertTypeFriendlyName: request.query.alertTypeFriendlyName || "Unknown",
         alertDetails: request.query.alertDetails,
         alertDuration: request.query.alertDuration,
         monitorAlertContacts: request.query.monitorAlertContacts,

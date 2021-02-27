@@ -55,10 +55,10 @@ export class WebhookProcessor {
 
             let title = `<h4><b>${data.monitorFriendlyName} is <u>${data.statusText}</u>!</b></h4>`;
             let text = ``;
-            if(data.isUp) {
+            if(data.isUp && data.alertDuration) {
                 text += `${data.monitorFriendlyName} was down for ${data.alertDuration}.\n`;
             } 
-            text += `Reason: ${data.alertDetails}.`;
+            text += `<b>Reason:</b> ${data.alertDetails}.`;
             if (data.sslExpiryDate && data.sslExpiryDaysLeft) {
                 text += `\nSSL expires in ${data.sslExpiryDaysLeft} days!`;
             }
@@ -66,8 +66,8 @@ export class WebhookProcessor {
             const colorSquare = `<span color="${color}">█</span>`; // This is not working with custom html
             let url = "https://uptimerobot.com";
             if (data.monitorURL) url = data.monitorURL;
-            if (!url.startsWith("http://") || !url.startsWith("https://")) url = `https://${url}`;
-            title = `<a style="color:green" href="${url}">${title}</a>`;
+            if (!url.startsWith("http://") && !url.startsWith("https://")) url = `https://${url}`;
+            title = `<a href="${url}">${title}</a>`;
 
             resultHtml += `${title}\n${text}`
 
