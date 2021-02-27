@@ -68,7 +68,7 @@ export class WebhookProcessor {
             let url = "https://uptimerobot.com";
             if (data.monitorURL) url = data.monitorURL;
             if (!url.startsWith("http://") && !url.startsWith("https://")) url = `https://${url}`;
-            if (data.port && !isNaN(data.port)) url = `${url}:${data.port}`;
+            if (data.port && !isNaN(data.port) && data.port > 0) url = `${url}:${data.port}`;
             title = `<a href="${url}">${title}</a>`;
 
             resultHtml += `${title}${text}`;
