@@ -56,27 +56,27 @@ export class WebhookProcessor {
             let title = `<h4><b>${data.monitorFriendlyName} is <u>${data.statusText}</u>!</b></h4>`;
             let text = ``;
             if(data.isUp) {
-                text += `${data.monitorFriendlyName} was down for ${data.alertDuration}.<br/>\n`;
+                text += `${data.monitorFriendlyName} was down for ${data.alertDuration}.\n`;
             } 
             text += `Reason: ${data.alertDetails}.`;
             if (data.sslExpiryDate && data.sslExpiryDaysLeft) {
-                text += `<br/>\nSSL expires in ${data.sslExpiryDaysLeft} days!`;
+                text += `\nSSL expires in ${data.sslExpiryDaysLeft} days!`;
             }
             const color = data.statusColor;
             const colorSquare = `<span color="${color}">█</span>`; // This is not working with custom html
             let url = "https://uptimerobot.com";
             if (data.monitorURL) url = data.monitorURL;
             if (!url.startsWith("http://") || !url.startsWith("https://")) url = `https://${url}`;
-            title = `<a href="${url}">${title}</a>`;
+            title = `<a style="color:green" href="${url}">${title}</a>`;
 
-            resultHtml += `${title}<br/>\n${text}`
+            resultHtml += `${title}\n${text}`
 
             // Send to room
             return this.client.sendMessage(roomId, {
                 msgtype: "m.notice",
                 body: striptags(resultHtml), // Fallback
                 format: "org.matrix.custom.html",
-                formatted_body: resultHtml
+                formatted_body: resultHtml.replace(`\n`, "<br/>")
             });
         }
         catch (e) {
