@@ -21,22 +21,22 @@ const port = config.port;
 async function processWebhook(request: any, response: any): Promise<any> {
     const id = request.params.id;
     if (!id) {
-        LogService.error("app.post", `id not provided`);
+        LogService.error("processWebhook", `id not provided`);
         return response.status(400).send();
     }
     const configRecord = config.webhooks.find((w) => { return w.guid === id; });
     if (!configRecord) {
-        LogService.error("app.post", `Config record not found for id ${id}`);
+        LogService.error("processWebhook", `Config record not found for id ${id}`);
         return response.status(204).send();
     }
     const roomIds = configRecord.room_ids;
     if (!roomIds || roomIds.length < 1) {
-        LogService.error("app.post", `roomIds not found for id ${id}`);
+        LogService.error("processWebhook", `roomIds not found for id ${id}`);
         return response.status(204).send();
     }
     const query = request.query || {};
     if (!query.monitorID) {
-        LogService.warn("app.post", `Payload was invalid, ignoring: ${JSON.stringify({ request })}`);
+        LogService.warn("processWebhook", `Payload was invalid, ignoring: ${JSON.stringify({ request })}`);
         return response.status(406).send();
     }
     const body = request.body || {};
@@ -52,7 +52,7 @@ async function processWebhook(request: any, response: any): Promise<any> {
         sslExpiryDate: query.sslExpiryDate || body.sslExpiryDate,
         sslExpiryDaysLeft: query.sslExpiryDaysLeft || body.sslExpiryDaysLeft
     };
-    return webhookProcessor.processWebhook(id, roomIds, payload).then(() => { return response.status(200).send(); }).catch(() => { return response.status(500).send(); });
+    webhookProcessor.processWebhook(id, roomIds, payload).then(() => { return response.status(200).send(); }).catch(() => { return response.status(500).send(); });
 }
 
 app.put("/webhook/:id", async (request, response) => {
@@ -60,9 +60,11 @@ app.put("/webhook/:id", async (request, response) => {
     return response.status(405);
 });
 app.get("/webhook/:id", async (request, response) => {
+    LogService.info("app.get", `Received request: ${JSON.stringify(request)}`);
     return processWebhook(request, response);
 });
 app.post("/webhook/:id", async (request, response) => {
+    LogService.info("app.post", `Received request: ${JSON.stringify(request)}`);
     return processWebhook(request, response);
 });
 app.listen(port, () => {
